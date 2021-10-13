@@ -3,7 +3,7 @@ package com.example.models;
 public class Account  {
 	
 	private int accountId;
-	private double balance;
+	private int balance;
 	private String username;
 	
 	public Account()
@@ -11,7 +11,7 @@ public class Account  {
 		
 	}
 	
-	public Account(int accountId, double balance, String username) {
+	public Account(int accountId, int balance, String username) {
 		super();
 		this.accountId = accountId;
 		this.balance = balance;
@@ -22,10 +22,10 @@ public class Account  {
 	{
 		super();
 		this.username = username;
-		this.balance = 0.0;
+		this.balance = 0;
 	}
 	
-	public Account(double balance, String username) {
+	public Account(int balance, String username) {
 		super();
 		this.balance = balance;
 		this.username = username;
@@ -39,11 +39,11 @@ public class Account  {
 		this.accountId = accountId;
 	}
 
-	public double getBalance() {
+	public int getBalance() {
 		return balance;
 	}
 
-	public void setBalance(double balance) {
+	public void setBalance(int balance) {
 		this.balance = balance;
 	}
 
@@ -57,7 +57,7 @@ public class Account  {
 
 	@Override
 	public String toString() {
-		return "Account [accountId=" + accountId + ", balance=" + balance + ", username=" + username + "]";
+		return "Account [accountId=" + accountId + ", balance=" + balance + ", username=" + username + "] (Next Customer ->) ";
 	}
 		
 	

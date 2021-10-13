@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.example.models.Account;
 import com.example.utils.ConnectionUtil;
+import com.example.logging.Logging;
 
 public class AccountDaoDb implements AccountDao {
 
@@ -24,23 +25,29 @@ public class AccountDaoDb implements AccountDao {
 	@Override
 	public List<Account> getAllAcounts() {
      List<Account> accountList = new ArrayList<Account>();
+     
+     // Upper code works but not for seeing all of the accounts bc return types 
 		
 		try {
 			//Make the actual connection to the db
 			Connection con = conUtil.getConnection();
+			con.setAutoCommit(false);
 			
-			//Create a simple statement
+			//Create a select statement
 			String sql = "SELECT * FROM accounts";
 			
-			//We need to create a statement with the sql string
+			//Create a statement with the sql string
 			Statement s = con.createStatement();
 			ResultSet rs = s.executeQuery(sql);
 			
 			//We have to loop through the ResultSet and create objects based off the return
 			while(rs.next()) {
-				accountList.add(new Account(rs.getInt(1), rs.getInt(2), rs.getString(3)));
+				//accountList.add(new Account(rs.getInt(1), rs.getInt(2), rs.getString(3)));
+				Account account = new Account(rs.getInt(1), rs.getInt(2), rs.getString(3));
+				accountList.add(account);
 			}
-			
+						
+			con.setAutoCommit(true);
 			return accountList;
 			
 		} catch(SQLException e) {
@@ -49,6 +56,8 @@ public class AccountDaoDb implements AccountDao {
 		
 		return null;
 	}
+	
+	
 
 	@Override
 	public Account getAccountByUsername(String username) {
@@ -65,7 +74,7 @@ public class AccountDaoDb implements AccountDao {
 			
 			while(rs.next()) {
 				account.setAccountId(rs.getInt(1));
-				account.setBalance(rs.getDouble(2));
+				account.setBalance(rs.getInt(2));
 				account.setUsername(rs.getString(3));
 			}
 			
@@ -89,7 +98,7 @@ public class AccountDaoDb implements AccountDao {
 			
 			CallableStatement cs = con.prepareCall(sql);
 			
-			cs.setDouble(1, a.getBalance());
+			cs.setInt(1, a.getBalance());
 			cs.setString(2, a.getUsername());
 			
 			cs.execute();
@@ -100,26 +109,14 @@ public class AccountDaoDb implements AccountDao {
 			e.printStackTrace();
 		}		
 	}
-
-	@Override
-	public void updateAccount(Account a) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deleteAccount(Account a) {
-		// TODO Auto-generated method stub
-		
-	}
 	
-
+/*
 	@Override
 	public void updateAccount(Account a, Account a2) {
 		
 		try {
 			Connection con = conUtil.getConnection();
-			String sql = "UPDATE accounts SET balance = ?, username = ?";
+			String sql = "UPDATE accounts SET balance = balance + ?, username = ?";
 			
 			PreparedStatement ps = con.prepareStatement(sql);
 			
@@ -130,23 +127,53 @@ public class AccountDaoDb implements AccountDao {
 			e.printStackTrace();
 		}
 	}
+*/
 
-/*
 	@Override
 	public void deleteAccount(Account a) {
 
 		try {
 			Connection con = conUtil.getConnection();
-			String sql = "DELETE FROM accounts WHERE accounts.id = ?";
+			String sql = "DELETE FROM accounts WHERE accounts.username = ?";
 			PreparedStatement ps = con.prepareStatement(sql);
-			ps.setInt(1, a.getAccountId());
+			ps.setString(1, a.getUsername());
 			ps.execute();
+			
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 		
 	}
 	
-	*/
+	@Override
+	public void updateAccount(Account a) {
+		try {
+			Connection con = conUtil.getConnection();		 // commented out below bc key username already exists 
+			String sql = "UPDATE accounts SET balance = balance - ?"; //, username = ?";
+			
+			PreparedStatement ps = con.prepareStatement(sql);
+			
+			ps.setInt(1, a.getBalance());
+			//ps.setString(2, a.getUsername());
+			
+			ps.execute();
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public String toString() {
+		return "AccountDaoDb [getAllAcounts()=" + getAllAcounts() + "]";
+	}
+
+	@Override
+	public void updateAccount(Account a, Account a2) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

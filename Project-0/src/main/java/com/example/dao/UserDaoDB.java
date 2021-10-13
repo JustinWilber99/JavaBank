@@ -38,7 +38,7 @@ public class UserDaoDB implements UserDao {
 			
 			//We have to loop through the ResultSet and create objects based off the return
 			while(rs.next()) {
-				userList.add(new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)));
+				userList.add(new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)));
 			}
 			
 			return userList;

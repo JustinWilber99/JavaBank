@@ -1,6 +1,7 @@
 package com.example.services;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import com.example.dao.AccountDao;
 import com.example.exceptions.AccountAlreadyExistsException;
@@ -15,6 +16,12 @@ public class AccountServices {
 	public AccountServices(AccountDao aDao) {
 		this.aDao = aDao;
 	}
+	
+	/*
+	public List<AccountServices> getAllAccounts() {
+		return aDao.getAllAccounts;
+	}
+	*/
 
 	public Account findAccount(String username)
 	{
@@ -48,9 +55,9 @@ public class AccountServices {
 	}
 	
 	
-	public void withdraw(Account a, double withdraw) throws SQLException
+	public void withdraw(Account a, int withdraw) throws SQLException
 	{
-		double newBal = (a.getBalance()-withdraw);
+		int newBal = (a.getBalance()-withdraw);
 		
 		Account a2 = new Account(a.getAccountId(), newBal, a.getUsername());
 		
@@ -58,31 +65,31 @@ public class AccountServices {
 		Logging.logger.info("Withdrew from account successfully");		
 	}
 	
-	public void deposit(Account a, double deposit) throws SQLException
+	public void deposit(Account a, int deposit) throws SQLException
 	{
-		double newBal = (a.getBalance()+deposit);
+		int newBal = (a.getBalance()+deposit);
 		
 		Account a2 = new Account(a.getAccountId(), newBal, a.getUsername());
 		
 		aDao.updateAccount(a2);
 		Logging.logger.info("Deposited into account successfully");		
 	}
-	/*
-	public void transfer(Account a, String username, double transfer)
+	
+	public void transfer(Account a, String username, int transfer)
 	{
-		//find other persons account, check if exists. use username
-		//update that account with the new balance
-		//return account? idk
 		
 		Account transferA = aDao.getAccountByUsername(username);
-		double newBal = (transferA.getBalance()+transfer);
+		int newBal = (transferA.getBalance() + transfer);
 		
-		Account newAccount = Account(transferA.getAccountId(), newBal, transferA.getUsername());
+		Account newAccount = new Account(transferA.getAccountId(), newBal, transferA.getUsername());
 		
 		aDao.updateAccount(newAccount);
+		Logging.logger.info("Transfered into account successfully");
+		Logging.logger.
 		
 	}
 	
+
 	public void delete(Account a)
 	{
 		try {
@@ -96,6 +103,6 @@ public class AccountServices {
 		
 		
 	}
-	*/
+	
 	
 }
