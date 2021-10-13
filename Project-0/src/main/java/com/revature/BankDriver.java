@@ -43,7 +43,7 @@ public class BankDriver {
 		User u = null;
 		Account a = null;	
 		
-		do {
+		//do {
 			
 			if(u == null) {
 				System.out.println("-------------------------");
@@ -51,8 +51,12 @@ public class BankDriver {
 				System.out.println("-------------------------");
 				System.out.println("Login or Signup? Press 1 to login, press 2 to signup");
 				int choice = Integer.parseInt(in.nextLine());
-									
-					if(choice == 1) {
+				
+				if (choice < 1 && choice > 2) {
+					System.out.println("Invalid input... 1 or 2 only.");
+					System.out.println("-------------------------");
+				
+				}else if(choice == 1) {
 						System.out.print("Please enter your username: ");
 						String username = in.nextLine();
 						System.out.print("Please enter your password: ");
@@ -63,6 +67,7 @@ public class BankDriver {
 						System.out.println("-------------------------");
 						System.out.println("Welcome " + u.getUsername());
 						System.out.println("-------------------------");
+						
 						
 						System.out.println("What would you like to do next?");
 						System.out.println("");
@@ -96,7 +101,7 @@ public class BankDriver {
 						  }
 						   System.out.println("$" + withdrawAmount + " was withdrawn.");						 
 						   //Update the database itself
-						   aDao.updateAccount(a);
+						   aDao.updateAccountWithdraw(a);
 						 
 						   System.out.println("Your amount after withdrawl is: $" + (a.getBalance() - withdrawAmount) + ".00");
 		 
@@ -113,9 +118,9 @@ public class BankDriver {
 						 
 						 int depositAmount = Integer.parseInt(in.nextLine());
 						 
-						 //Then try to withdraw the withdrawAmount from account a 
+						 //Then try to deposit the depositAmount from account a 
 						 try {
-							aServ.withdraw(a, depositAmount);  
+							aServ.deposit(a, depositAmount);
 						} catch (SQLException e) {
 							e.printStackTrace();
 						}					 
@@ -141,12 +146,15 @@ public class BankDriver {
 						 aServ.transfer(a, usernameTo, transferAmount);
 						 
 						 //Update the database itself
-						 aDao.updateAccount(a);
+						 aDao.updateAccountWithdraw(a);
 						 
 						 System.out.println("-------------------------");
 						 System.out.println("Your amount after transfering is: $" + (a.getBalance() - transferAmount) + ".00");
-						 
+						 System.out.println("pbeesly's account now has $" + transferAmount);
 					 } else if (choice2 == 4) {
+						 
+						 {
+						 
 						 //do logic for employee
 						 System.out.println("Welcome Employee! What would you like to do?");
 						 
@@ -155,7 +163,6 @@ public class BankDriver {
 						 System.out.println("Enter your choice: ");
 						 
 						 int choice4 = Integer.parseInt(in.nextLine());
-						 
 						 switch (choice4) {
 						 case 1:
 						 {		// Copy and pasted from above
@@ -177,7 +184,7 @@ public class BankDriver {
 							}
 							 
 							 //Update the database itself
-							 aDao.updateAccount(a);
+							 aDao.updateAccountWithdraw(a);
 							 
 							 System.out.println("$" + withdrawAmount + " was withdrawn.");
 							 System.out.println("Your amount after withdrawl is: $" + (a.getBalance() - withdrawAmount) + ".00");
@@ -197,9 +204,9 @@ public class BankDriver {
 							 
 							 int depositAmount = Integer.parseInt(in.nextLine());							 
 							 
-							 //Then try to withdraw the withdrawAmount from account a 
+							 //Then try to deposit the depositAmount from account a 
 							 try {
-								aServ.withdraw(a, depositAmount); 
+								 aServ.deposit(a, depositAmount);
 							} catch (SQLException e) {
 								e.printStackTrace();
 							}							 
@@ -227,7 +234,7 @@ public class BankDriver {
 							 aServ.transfer(a, usernameTo, transferAmount);
 							 
 							 //Update the database itself
-							 aDao.updateAccount(a);
+							 aDao.updateAccountWithdraw(a);
 							 System.out.println("-------------------------");
 							 System.out.println("Your amount after transfering is: $" + (a.getBalance() - transferAmount) + ".00");
 
@@ -260,7 +267,11 @@ public class BankDriver {
 							 						 							 
 							 break;
 						 }
-					 }
+						 default:
+							 System.out.println("Enter 1-5 only.");
+							 break;
+						 	}
+						 }
 						 
 					 } else if (choice2 == 5) {
 						 //do logic for bankAdmin
@@ -293,7 +304,7 @@ public class BankDriver {
 							}
 							 
 							//Update the database itself
-							 aDao.updateAccount(a);
+							 aDao.updateAccountWithdraw(a);
 							 System.out.println("$" + withdrawAmount + " was withdrawn.");
 							 System.out.println("Your amount after withdrawing is: $" + (a.getBalance() - withdrawAmount) + ".00");
 							 
@@ -314,7 +325,7 @@ public class BankDriver {
 							 							 
 							 //Then try to withdraw the withdrawAmount from account a 
 							 try {
-								aServ.withdraw(a, depositAmount);  
+								 aServ.deposit(a, depositAmount);
 							} catch (SQLException e) {
 								e.printStackTrace();
 							}							 
@@ -381,7 +392,7 @@ public class BankDriver {
 							
 							 System.out.println("-------------------------");
 							 System.out.println("Time to cancel accounts!");							
-							 System.out.println("There are " + accountList.size() + " Customers");
+							 System.out.println("There are " + accountList.size() + " accounts");
 							 System.out.println("-------------------------");
 							 System.out.println(Arrays.toString(accountList.toArray()));	
 							 
@@ -394,7 +405,7 @@ public class BankDriver {
 								 // Perform the deletion on account a
 							 aDao.deleteAccount(a);
 							 
-							 System.out.println("After cancelling " + usernameToCancel + " there are " + (accountList.size() - 1) + " Customers");
+							 System.out.println("After cancelling " + usernameToCancel + " there are " + (accountList.size() - 1) + " accountss");
 								 						 
 							 }
 							 
@@ -406,8 +417,8 @@ public class BankDriver {
 					// set done2 to true for the loop
 					 done2 = true;
 					 
-						 						 
-				} else if (choice == 2) {
+					}
+						else if (choice == 2) {
 					System.out.print("Please enter your first name: ");
 					String first = in.nextLine();
 					System.out.print("Please enter your last name: ");
@@ -437,13 +448,15 @@ public class BankDriver {
 			 // set done2 to true for the loop
 			 done2 = true;
 			} //while (!done); // while loop ends on this block
-	
+			
 		    //Out of main loop - Thank and exit
+			System.out.println("-------------------------");
+			System.out.println("Signed out...");
+			System.out.println("-------------------------");
 			System.out.println("Thanks for using JavaBank! We appreciate your business!");
 			System.out.println("Only one transaction at a time is allowed.");
 			System.out.println("Log in if you wish to make another transaction.");
 			System.exit(0);
-		
-		} while (!done); // while loop ends on this block
+	
+		}
 	}
-}

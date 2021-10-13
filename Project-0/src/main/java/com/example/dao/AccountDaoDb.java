@@ -110,24 +110,24 @@ public class AccountDaoDb implements AccountDao {
 		}		
 	}
 	
-/*
+	// using this method for withdraw transactions that update the account
 	@Override
-	public void updateAccount(Account a, Account a2) {
-		
+	public void updateAccountWithdraw(Account a) {
 		try {
-			Connection con = conUtil.getConnection();
-			String sql = "UPDATE accounts SET balance = balance + ?, username = ?";
+			Connection con = conUtil.getConnection();		 // commented out below bc key username already exists 
+			String sql = "UPDATE accounts SET balance = balance - ?"; //, username = ?";
 			
 			PreparedStatement ps = con.prepareStatement(sql);
 			
-			ps.setDouble(1, a.getBalance());
-			ps.setString(2, a.getUsername());
+			ps.setInt(1, a.getBalance());
+			//ps.setString(2, a.getUsername());
+			
+			ps.execute();
 			
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 	}
-*/
 
 	@Override
 	public void deleteAccount(Account a) {
@@ -144,12 +144,12 @@ public class AccountDaoDb implements AccountDao {
 		}
 		
 	}
-	
+	// using this method for deposit transactions that update the account
 	@Override
 	public void updateAccount(Account a) {
 		try {
 			Connection con = conUtil.getConnection();		 // commented out below bc key username already exists 
-			String sql = "UPDATE accounts SET balance = balance - ?"; //, username = ?";
+			String sql = "UPDATE accounts SET balance = balance + ?"; //, username = ?";
 			
 			PreparedStatement ps = con.prepareStatement(sql);
 			

@@ -85,7 +85,6 @@ public class AccountServices {
 		
 		aDao.updateAccount(newAccount);
 		Logging.logger.info("Transfered into account successfully");
-		Logging.logger.
 		
 	}
 	
